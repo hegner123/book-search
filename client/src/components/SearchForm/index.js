@@ -1,14 +1,14 @@
 import React from "react";
 
-function SearchForm(){
+function SearchForm(props){
   return(
     <div className="p-5 bg-secondary">
     <h1>Search Books</h1>
     <form>
       <div className="form-group">
-       <input type="text" className="form-control" id="search" placeholder="Search"/>
+       <input type="text" className="form-control" id="search" placeholder="Search" onChange={props.handleInputChange}/>
       </div>
-      <button className="btn btn-primary d-block ml-auto">Search</button>
+      <button className="btn btn-primary d-block ml-auto" onClick={props.handleFormSubmit}>Search</button>
     </form>
     </div>
   )
