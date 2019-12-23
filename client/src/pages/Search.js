@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import { Col, Row, Container } from "../components/Container";
 import Jumbotron from "../components/Jumbotron";
 import SearchForm from "../components/SearchForm";
-import SearchResults from "../components/SearchResults"
+import SearchResults from "../components/SearchResults";
+import API from "../utils/API"
+
 
 
 
@@ -11,10 +13,8 @@ import SearchResults from "../components/SearchResults"
 class Search extends Component {
   // Setting our component's initial state
   state = {
-    books: [],
-    title: "",
-    author: "",
-    synopsis: ""
+    search : " ",
+    books : []
   };
 
 
@@ -23,9 +23,9 @@ class Search extends Component {
 
   // Handles updating component state when the user types into the input field
   handleInputChange = event => {
-    const { name, value } = event.target;
+    const { search, value } = event.target;
     this.setState({
-      [name]: value
+      [search]: value
     });
   };
 
@@ -33,15 +33,15 @@ class Search extends Component {
   // Then reload books from the database
   handleFormSubmit = event => {
     event.preventDefault();
-    if (this.state.title && this.state.author) {
-      API.saveBook({
-        title: this.state.title,
-        author: this.state.author,
-        synopsis: this.state.synopsis
-      })
-        .then(res => this.loadBooks())
-        .catch(err => console.log(err));
-    }
+
+    API.searchBook({
+      search: this.state.search,
+    }).then(res => console.log(res.data.items[0].volumeInfo.title))
+  }
+
+  loadBooks = (data) => {
+    this.setState({ books: data });
+    console.log(this.state.search)
   };
 
   render() {
