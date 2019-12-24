@@ -1,4 +1,5 @@
 import axios from "axios";
+const bookUrl = "https://www.googleapis.com/books/v1/volumes?q=";
 
 export default {
   // Gets all books
@@ -19,7 +20,17 @@ export default {
   },
 
   searchBook:function(props){
-    return axios.get("https://www.googleapis.com/books/v1/volumes?q=" + props)
+    return axios({
+        method:'get',
+          url: bookUrl + props.search,
+          dataType: "json",
+          success: function(response) {
+            console.log(response)
+          }
+      });
   }
-   
-};
+
+
+}
+
+

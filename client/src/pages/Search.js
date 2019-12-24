@@ -4,6 +4,8 @@ import Jumbotron from "../components/Jumbotron";
 import SearchForm from "../components/SearchForm";
 import SearchResults from "../components/SearchResults";
 import API from "../utils/API"
+import SearchItem from "../components/SearchItem";
+
 
 
 
@@ -13,7 +15,7 @@ import API from "../utils/API"
 class Search extends Component {
   // Setting our component's initial state
   state = {
-    search : " ",
+    search : '',
     books : []
   };
 
@@ -23,9 +25,9 @@ class Search extends Component {
 
   // Handles updating component state when the user types into the input field
   handleInputChange = event => {
-    const { search, value } = event.target;
+    const { value } = event.target;
     this.setState({
-      [search]: value
+      search: value
     });
   };
 
@@ -36,11 +38,14 @@ class Search extends Component {
 
     API.searchBook({
       search: this.state.search,
-    }).then(res => console.log(res.data.items[0].volumeInfo.title))
+    })
+    .then(res => this.setState({books: res}))
+    .catch(err => console.log(err));
+    console.log(this.state.books);
   }
 
-  loadBooks = (data) => {
-    this.setState({ books: data });
+  loadBooks = (res) => {
+    this.setState({ books: res.data });
     console.log(this.state.search)
   };
 
@@ -60,12 +65,12 @@ class Search extends Component {
             <Row>
               <Col size="12" styles="mt-5 p-5 bg-light">
                 <h3>Results</h3>
-                <SearchResults/>
+                <SearchResults>
+        </SearchResults>
               </Col>
             </Row>
           </Container>
       </div>
-
     );
   }
 }
